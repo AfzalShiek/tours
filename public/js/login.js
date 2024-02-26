@@ -1,11 +1,11 @@
 // import '@babel/polyfill';
 // import showAlert from('./alerts/showAlert')
 // const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-import Stripe from "stripe";
+// import Stripe from "stripe";
 
-
-const stripe = Stripe('sk_test_51Okn9VSArklzccZrn3uda5eDUsh7iN5UTwQ7i29ml1o4vpWSpR7HWhCmJHPn2kiGkpm819sq5Q0XOXurOTsSJWF400F5lhDEl0');
-
+// const stripe = Stripe(
+//   'sk_test_51Okn9VSArklzccZrn3uda5eDUsh7iN5UTwQ7i29ml1o4vpWSpR7HWhCmJHPn2kiGkpm819sq5Q0XOXurOTsSJWF400F5lhDEl0'
+// );
 
 const login = async (email, password) => {
   const hideAlert = () => {
@@ -36,7 +36,7 @@ const login = async (email, password) => {
   };
 
   fetch('/api/v1/users/login', requestOptions)
-    .then(async (response) => {
+    .then(async response => {
       const result = await response.json();
       // console.log(result);
       if (result.status === 'success') {
@@ -51,7 +51,7 @@ const login = async (email, password) => {
         showAlert('error', result.message);
       }
     })
-    .catch(async (error) => {
+    .catch(async error => {
       const result = await error.response.json();
       // console.log(result);
     });
@@ -66,7 +66,7 @@ const loginForm = document.querySelector('.form--login');
 // });
 
 if (loginForm)
-  loginForm.addEventListener('submit', (e) => {
+  loginForm.addEventListener('submit', e => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -74,7 +74,7 @@ if (loginForm)
   });
 
 const logout = () => {
-  // console.log('Logging Out');
+  console.log('Logging Out');
   const hideAlert = () => {
     const el = document.querySelector('.alert');
     if (el) el.parentElement.removeChild(el);
@@ -95,7 +95,7 @@ const logout = () => {
     redirect: 'follow',
   };
   fetch('/api/v1/users/logout', requestOptions)
-    .then(async (response) => {
+    .then(async response => {
       const result = await response.json();
       // console.log(result);
       if (result.status === 'success') {
@@ -107,21 +107,21 @@ const logout = () => {
         showAlert('error', result.message);
       }
     })
-    .catch(async (error) => {
+    .catch(async error => {
       const result = await error.response.json();
       // console.log(result);
     });
 };
 
 const logOutBtn = document.querySelector('.nav__el--logout');
-// console.log(logOutBtn);
+console.log(logOutBtn);
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
 
 const userDataForm = document.querySelector('.form-user-data');
 
 if (userDataForm)
-  userDataForm.addEventListener('submit', (e) => {
+  userDataForm.addEventListener('submit', e => {
     e.preventDefault();
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
@@ -134,7 +134,7 @@ if (userDataForm)
 const userPasswordForm = document.querySelector('.form-user-password');
 // console.log(userPasswordForm);
 if (userPasswordForm)
-  userPasswordForm.addEventListener('submit', async (e) => {
+  userPasswordForm.addEventListener('submit', async e => {
     e.preventDefault();
     document.querySelector('.btn--save-password').textContent = 'Updating...';
 
@@ -143,16 +143,12 @@ if (userPasswordForm)
     const passwordConfirm = document.getElementById('password-confirm').value;
     // console.log({ passwordCurrent, password, passwordConfirm });
     const raw = JSON.stringify({
-      "password": password,
-      "passwordConfirm": passwordConfirm,
-      "passwordCurrent": passwordCurrent
+      password: password,
+      passwordConfirm: passwordConfirm,
+      passwordCurrent: passwordCurrent,
     });
 
-
-    await updateSettings(
-      raw,
-      'password'
-    );
+    await updateSettings(raw, 'password');
 
     document.querySelector('.btn--save-password').textContent = 'Save password';
     document.getElementById('password-current').value = '';
@@ -174,25 +170,28 @@ const updateSettings = (data, types) => {
     window.setTimeout(hideAlert, time * 1000);
   };
 
-  const requestOptions =types==='password'? {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json', 
-    },
-    body: data,
-    redirect: 'follow',
-  }:{
-    method: 'PATCH',
-    body: data,
-    redirect: 'follow',
-  };
+  const requestOptions =
+    types === 'password'
+      ? {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: data,
+          redirect: 'follow',
+        }
+      : {
+          method: 'PATCH',
+          body: data,
+          redirect: 'follow',
+        };
 
   const url =
     types === 'password'
       ? '/api/v1/users/updateMyPassword'
       : '/api/v1/users/updateMe';
   fetch(url, requestOptions)
-    .then(async (response) => {
+    .then(async response => {
       const result = await response.json();
       // console.log(result);
       if (result.status === 'success') {
@@ -205,7 +204,7 @@ const updateSettings = (data, types) => {
         showAlert(result.status, result.message);
       }
     })
-    .catch(async (error) => {
+    .catch(async error => {
       const result = await error.response.json();
       showAlert('error', error.response.data.message);
 
@@ -213,55 +212,51 @@ const updateSettings = (data, types) => {
     });
 };
 
-
-
-
 // Stripe
 const bookBtn = document.getElementById('book-tour');
 // console.log(bookBtn);
 if (bookBtn)
   bookBtn.addEventListener('click', e => {
     e.target.textContent = 'Processing...';
-    const { tourId } = e.target.dataset;
+    const {tourId} = e.target.dataset;
     bookTour(tourId);
   });
 
-
-  const bookTour = (tourId) => {
-    const hideAlert = () => {
-      const el = document.querySelector('.alert');
-      if (el) el.parentElement.removeChild(el);
-    };
-  
-    const showAlert = (type, msg, time = 7) => {
-      hideAlert();
-      const markup = `<div class="alert alert--${type}">${msg}</div>`;
-      document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
-      window.setTimeout(hideAlert, time * 1000);
-    };
-    const myHeaders = new Headers();
-    // myHeaders.append('Content-Type', 'application/json');
-  
-    const requestOptions = {
-      method: 'GET',
-      // headers: myHeaders,
-      redirect: 'follow',
-    };
-    fetch(`/api/v1/bookings/checkout-session/${tourId}`, requestOptions)
-      .then(async (response) => {
-        const result = await response.json();
-        // console.log(result.session.id);
-        if (result.status === 'success') {
-          // 2) Create checkout form + chanre credit card
-          // await stripe.redirectToCheckout({
-          //   sessionId: result.session.id
-          // });
-        } else {
-          showAlert('error', result.message);
-        }
-      })
-      .catch(async (error) => {
-        const result = await error.response.json();
-        // console.log(error);
-      });
+const bookTour = tourId => {
+  const hideAlert = () => {
+    const el = document.querySelector('.alert');
+    if (el) el.parentElement.removeChild(el);
   };
+
+  const showAlert = (type, msg, time = 7) => {
+    hideAlert();
+    const markup = `<div class="alert alert--${type}">${msg}</div>`;
+    document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
+    window.setTimeout(hideAlert, time * 1000);
+  };
+  const myHeaders = new Headers();
+  // myHeaders.append('Content-Type', 'application/json');
+
+  const requestOptions = {
+    method: 'GET',
+    // headers: myHeaders,
+    redirect: 'follow',
+  };
+  fetch(`/api/v1/bookings/checkout-session/${tourId}`, requestOptions)
+    .then(async response => {
+      const result = await response.json();
+      // console.log(result.session.id);
+      if (result.status === 'success') {
+        // 2) Create checkout form + chanre credit card
+        // await stripe.redirectToCheckout({
+        //   sessionId: result.session.id
+        // });
+      } else {
+        showAlert('error', result.message);
+      }
+    })
+    .catch(async error => {
+      const result = await error.response.json();
+      // console.log(error);
+    });
+};
