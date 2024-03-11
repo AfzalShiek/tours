@@ -133,12 +133,12 @@ app.use((req, res, next) => {
 // app.delete("/api/v1/tours/:id", deleteTour);
 
 //Parent Routes
-// app.use('/', viewRouter);
+app.use('/', viewRouter);
 const swaggerFile = JSON.parse(
   fs.readFileSync('./resources/views/swagger-api-view.json', 'utf-8')
 );
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
-app.get('/', (req, res) => res.redirect('/api-docs'));
+app.get('/swagger', (req, res) => res.redirect('/api-docs'));
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);

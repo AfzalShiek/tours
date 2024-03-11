@@ -9,7 +9,7 @@ const doc = {
         description: 'Documentation', // by default: ""
     },
     host: "localhost:3000", // by default: "localhost:3000"
-    basePath: '/', // by default: "/"
+    basePath: '/swagger', // by default: "/"
     schemes: ['http', 'https'],
     consumes: ['application/json', 'application/x-www-form-urlencoded'],
     produces: ['application/json'],
