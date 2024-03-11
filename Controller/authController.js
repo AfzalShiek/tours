@@ -16,11 +16,16 @@ const createAndSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000 //90*One Day
     ),
-    httpOnly: true,
+    httpOnly: true,//the httpOnly flag is set to true, meaning the cookie cannot be accessed via JavaScript.
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  //Setting the secure option to true is a security measure because
+  // it ensures that the cookie is only transmitted over a secure, 
+  //encrypted connection (HTTPS). In a production environment,
+  // it's crucial to use HTTPS to protect sensitive information from potential security threats.
+
   res.cookie('jwt', token, cookieOptions);
 
   //Removed the password from the output

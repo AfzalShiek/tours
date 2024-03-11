@@ -12,7 +12,9 @@
     "start:prod": "SET NODE_ENV=production&& nodemon server.js",
     "debug": "ndb server.js",
     "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js/bundled",
-    "build:js": "parcel build ./public/js/index.js --out-dir ./public/js/bundled"
+    "build:js": "parcel build ./public/js/index.js --out-dir ./public/js/bundled",
+    "swagger": "node ./resources/views/swagger.config.js",
+    "prestart": "node ./resources/views/swagger.config.js"
   },
   "author": "Afzal Shiek",
   "license": "ISC",
@@ -23,6 +25,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "core-js": "^3.18.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "esbuild": "0.20.1",
     "express": "^4.18.2",
@@ -43,6 +46,8 @@
     "sharp": "^0.33.2",
     "slugify": "^1.6.6",
     "stripe": "^7.0.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.0",
     "validator": "^13.11.0",
     "xss-clean": "^0.1.4"
   },

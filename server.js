@@ -1,16 +1,16 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const dotenv = require("dotenv");
-dotenv.config({ path: "./config.env" }); //This Above Two Lines should be defined before importing app
+const dotenv = require('dotenv');
+dotenv.config({path: './config.env'}); //This Above Two Lines should be defined before importing app
 
-process.on("uncaughtException", (err) => {
+process.on('uncaughtException', err => {
   // console.log("UNCAUGHT EXCEPTION ! 💥Shutting Down...");
   // console.log(err.name, err.message);
   process.exit(1);
 });
 
 const DB = process.env.DATABASE.replace(
-  "<PASSWORD>",
+  '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
 
@@ -19,7 +19,7 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
   })
-  .then(() => console.log("DB Connection Successful"));
+  .then(() => console.log('DB Connection Successful'));
 
 // const tourSchema = new mongoose.Schema({
 //   name: {
@@ -54,7 +54,10 @@ mongoose
 //     console.log("Error :", err);
 //   });
 
-const app = require("./app");
+
+
+const app = require('./app');
+
 
 // console.log(process.env);
 const port = process.env.PORT;
@@ -62,11 +65,10 @@ const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
 
-process.on("unhandledRejection", (err) => {
-  console.log("UNHANDLED REJECTION ! 💥Shutting Down...");
+process.on('unhandledRejection', err => {
+  console.log('UNHANDLED REJECTION ! 💥Shutting Down...');
   console.log(err.name, err.message);
   server.close(() => {
     process.exit(1);
   });
 });
-

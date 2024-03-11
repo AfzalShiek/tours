@@ -15,6 +15,9 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const cors = require('cors');
 
 const app = express();
 
@@ -23,6 +26,16 @@ app.set('views', path.join(__dirname, '/utils/views'));
 // console.log(process.env.NODE_ENV);
 
 // 1)GLOBAL MIDDLEWARES
+//Implement CORS
+app.use(cors());
+//Access-Control-Allow-Origin *
+//To allow access for specific Routes
+// app.use(
+//   cors({
+//     origin: 'https://www.natours.com',
+//   })
+// );
+app.options('*',cors());
 
 //Serving static Files
 // app.use(express.static(`${__dirname}/starter/public`));
@@ -119,7 +132,13 @@ app.use((req, res, next) => {
 // app.delete("/api/v1/tours/:id", deleteTour);
 
 //Parent Routes
-app.use('/', viewRouter);
+// app.use('/', viewRouter);
+const swaggerFile = JSON.parse(
+  fs.readFileSync('./resources/views/swagger-api-view.json', 'utf-8')
+);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.get('/', (req, res) => res.redirect('/api-docs'));
+
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);

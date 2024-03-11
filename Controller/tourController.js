@@ -96,75 +96,17 @@ exports.aliasTopTours = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllTours = factory.getAll(Tour);
+/* #swagger.tags = ['Open']
+                           #swagger.description = 'This routes is used to get all the Tours'  */
+       
 
-// catchAsync(async (req, res, next) => {
-//     //BUILD THE QUERY
+        /*	#swagger.parameters['data'] = {
+                                in: 'body',
+                                description: 'User  Details',
+                                required: true,
+                                schema: { $ref: "#/definitions/TourDetails" }
+        }*/
 
-//     // //1A.Filtering
-//     // const queryObj = { ...req.query };
-//     // const excludedFields = ["page", "sort", "limit", "fields"];
-//     // excludedFields.forEach((el) => delete queryObj[el]);
-//     // console.log(req.query);
-
-//     // //1B.Advanced Filtering
-//     // let queryStr = JSON.stringify(queryObj);
-//     // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-//     // console.log(JSON.parse(queryStr));
-
-//     // let query = Tour.find(JSON.parse(queryStr));
-
-//     // //2.Sorting
-//     // if (req.query.sort) {
-//     //   const sortBy = req.query.sort.split(",").join(" ");
-//     //   console.log(sortBy);
-//     //   query = query.sort(req.query.sort);
-//     //   //sort('price ratingsAverage')
-//     // } else {
-//     //   query = query.sort("-createdAt");
-//     // }
-
-//     // //3.Field Limiting
-//     // if (req.query.fields) {
-//     //   const fields = req.query.fields.split(",").join(" ");
-//     //   query = query.select(fields);
-//     // } else {
-//     //   query = query.select("-__v");
-//     // }
-
-//     // //4.Pagination
-//     // const page = req.query.page * 1 || 1;
-//     // const limit = req.query.limit * 1 || 100;
-//     // const skip = (page - 1) * limit;
-
-//     // query = query.skip(skip).limit(limit);
-
-//     // if(req.query.page){
-//     //   const numTours = await Tour.countDocuments();
-//     //   /* ---- if(skip >= numTours) throw new Error('This Page does Not Exist') ---- */
-//     // }
-
-//     const features = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate();
-//     //EXECUTE QUERY
-//     const tours = await features.query;
-//     // const tours = await query;
-
-//     // const query =  Tour.find()
-//     //   .where("duration")
-//     //   .equals(5)
-//     //   .where("difficulty")
-//     //   .equals('easy');
-
-//     //SEND RESPONSE
-//     // console.log(req.requestTime);
-//     res.status(200).json({
-//         status: 'success',
-//         // requestedAt: req.requestTime,
-//         results: tours.length,
-//         data: {
-//             tours: tours,
-//         },
-//     });
-// });
 
 exports.getTour = factory.getOne(Tour, {path: 'reviews'});
 
