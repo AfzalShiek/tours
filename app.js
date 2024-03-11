@@ -20,7 +20,8 @@ const fs = require('fs');
 const cors = require('cors');
 
 const app = express();
-
+// Enable trust proxy
+app.set('trust proxy', true);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/utils/views'));
 // console.log(process.env.NODE_ENV);
