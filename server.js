@@ -17,7 +17,7 @@ const DB = process.env.DATABASE.replace(
 // mongoose.connect(process.env.DATABASE_LOCAL,{}) To Connect Locally
 mongoose
   .connect(DB, {
-    useNewUrlParser: true,
+    // useNewUrlParser: true,
   })
   .then(() => console.log('DB Connection Successful'));
 
