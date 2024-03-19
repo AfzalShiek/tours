@@ -18,6 +18,7 @@ const cookieParser = require('cookie-parser');
 const swaggerUi = require('swagger-ui-express');
 const fs = require('fs');
 const cors = require('cors');
+const auth = require('./utils/swaggerauth');
 
 const app = express();
 // Enable trust proxy
@@ -36,7 +37,7 @@ app.use(cors());
 //     origin: 'https://www.natours.com',
 //   })
 // );
-app.options('*',cors());
+app.options('*', cors());
 
 //Serving static Files
 // app.use(express.static(`${__dirname}/starter/public`));
@@ -137,7 +138,7 @@ app.use('/', viewRouter);
 const swaggerFile = JSON.parse(
   fs.readFileSync('./resources/views/swagger-api-view.json', 'utf-8')
 );
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use('/api-docs',auth.auth, swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.get('/swagger', (req, res) => res.redirect('/api-docs'));
 
 app.use('/api/v1/tours', tourRouter);
